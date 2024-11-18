@@ -1,0 +1,40 @@
+import { IInpageProviderConfig } from '@chargerwallet/cross-inpage-provider-core';
+import { ProviderConfluxBase } from './ProviderConfluxBase';
+import { IProviderConflux, DeprecatedType, ProviderEvents, ProviderEventsMap, ConsoleLike, Network, RequestArguments } from './types';
+type ChargerWalletConfluxProviderProps = IInpageProviderConfig & {
+    timeout?: number;
+};
+declare class ProviderConflux extends ProviderConfluxBase implements IProviderConflux {
+    readonly isConfluxPortal = true;
+    readonly isFluent = true;
+    readonly isChargerWallet = true;
+    private _isConnected;
+    private _initialized;
+    private _chainId;
+    private _networkVersion;
+    private _selectedAddress;
+    private _accounts;
+    private readonly _log;
+    constructor(props: ChargerWalletConfluxProviderProps);
+    private _initializeState;
+    private _registerEvents;
+    isAccountsChanged(accounts: string[]): boolean;
+    private _handleAccountsChanged;
+    isNetworkChanged(chainId: string): boolean;
+    private _handleChainChanged;
+    private _handleConnected;
+    private _handleDisconnected;
+    isConnected(): boolean;
+    request<T>(args: RequestArguments): Promise<T>;
+    on<E extends ProviderEvents>(event: E, listener: ProviderEventsMap[E]): this;
+    off<E extends ProviderEvents>(event: E, listener: ProviderEventsMap[E]): this;
+    emit<E extends ProviderEvents>(event: E, ...args: Parameters<ProviderEventsMap[E]>): boolean;
+    get chainId(): string;
+    get networkVersion(): string;
+    get selectedAddress(): string | null;
+    enable(): Promise<unknown>;
+    sendAsync(request: RequestArguments, callback: (err: Error | null | string, resp?: unknown) => void): void;
+    send<T>(args: RequestArguments): Promise<T>;
+}
+export { ProviderConflux };
+export { IProviderConflux, DeprecatedType, ProviderEvents, ProviderEventsMap, ConsoleLike, Network, RequestArguments, };
